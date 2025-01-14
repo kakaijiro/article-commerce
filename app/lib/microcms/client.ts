@@ -12,3 +12,12 @@ export const getAllBooks = async () => {
   });
   return allBooks;
 };
+
+export const getDetailBook = async (contentId: string) => {
+  const detailBook = await client.getListDetail<BookType>({
+    endpoint: process.env.NEXT_PUBLIC_SERVICE_DOMAIN!,
+    contentId,
+  });
+
+  return detailBook;
+};
