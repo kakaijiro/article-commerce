@@ -56,7 +56,7 @@ const Book = ({ book, isPurchased }: BookProps) => {
     if (!user) {
       setShowModal(false);
       // redirect to login page
-      router.push("/login");
+      router.push("/api/auth/signin");
     } else {
       // settlement procedure with Stripe
       startCheckout();

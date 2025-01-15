@@ -25,7 +25,6 @@ export default async function Home() {
     purchaseBookIds = purchasesData.map(
       (purchasedBook: Purchase) => purchasedBook.bookId
     );
-    // console.log(purchaseBookIds);
   }
 
   return (
@@ -38,7 +37,7 @@ export default async function Home() {
           <Book
             key={book.id}
             book={book}
-            isPurchased={purchaseBookIds.includes(book.id)}
+            isPurchased={purchaseBookIds && purchaseBookIds.includes(book.id)}
           />
         ))}
       </main>
