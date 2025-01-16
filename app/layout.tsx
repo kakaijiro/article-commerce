@@ -3,6 +3,8 @@ import { Noto_Sans_JP } from "next/font/google";
 import "./globals.css";
 import Header from "./components/Header";
 import { NextAuthProvider } from "./lib/next-auth/provider";
+import { Suspense } from "react";
+import Loading from "./loading"; // because of "default export," any name can be available
 
 const noteSansJP = Noto_Sans_JP({ subsets: ["latin"], weight: ["400"] });
 
@@ -21,7 +23,7 @@ export default function RootLayout({
       <body className={noteSansJP.className}>
         <NextAuthProvider>
           <Header />
-          {children}
+          <Suspense fallback={<Loading />}>{children}</Suspense>
         </NextAuthProvider>
       </body>
     </html>
