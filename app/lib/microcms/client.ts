@@ -9,6 +9,9 @@ export const client = createClient({
 export const getAllBooks = async () => {
   const allBooks = await client.getList<BookType>({
     endpoint: process.env.NEXT_PUBLIC_SERVICE_DOMAIN!, // "articlecommerce"
+    customRequestInit: {
+      cache: "no-store",
+    },
   });
   return allBooks;
 };
@@ -17,6 +20,9 @@ export const getDetailBook = async (contentId: string) => {
   const detailBook = await client.getListDetail<BookType>({
     endpoint: process.env.NEXT_PUBLIC_SERVICE_DOMAIN!,
     contentId,
+    customRequestInit: {
+      cache: "no-store",
+    },
   });
 
   return detailBook;
