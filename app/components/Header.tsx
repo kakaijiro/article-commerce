@@ -3,13 +3,14 @@ import React from "react";
 import { signOut } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import { User } from "../types/typse";
+import type { User } from "../types/typse";
 import { getServerSession } from "next-auth";
 import { nextAuthOptions } from "../lib/next-auth/options";
+import SessionDebug from "./SessionDebug";
 
 const Header = async () => {
   const session = await getServerSession(nextAuthOptions); // only in SSR
-  const user = session?.user as User;
+  const user = session?.user as User | undefined;
 
   return (
     <header className="bg-slate-600 text-gray-100 shadow-lg">
@@ -54,6 +55,7 @@ const Header = async () => {
           </Link>
         </div>
       </nav>
+      <SessionDebug />
     </header>
   );
 };

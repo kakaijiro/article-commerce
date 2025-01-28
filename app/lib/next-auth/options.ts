@@ -1,4 +1,4 @@
-import { NextAuthOptions } from "next-auth";
+import type { NextAuthOptions } from "next-auth";
 import GitHubProvider from "next-auth/providers/github";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { userAgent } from "next/server";
@@ -13,42 +13,20 @@ export const nextAuthOptions: NextAuthOptions = {
       clientSecret: process.env.GITHUB_SECRET!,
     }),
   ],
-  adapter: (() => {
-    try {
-      return PrismaAdapter(prisma);
-    } catch (error) {
-      console.error("PrismaAdapter error:", error);
-      throw error;
-    }
-  })(),
+  adapter: PrismaAdapter(prisma),
   callbacks: {
-    session: async ({ session, user }) => {
-      try {
-        if (session?.user) session.user.id = user.id;
-
-        return {
-          ...session,
-          user: {
-            ...session.user,
-            id: user.id,
-          },
-        };
-      } catch (error) {
-        console.error("Session callback error:", error);
-        return session;
-      }
-    },
-    // JWT処理の追加
-    jwt: async ({ token, user }) => {
-      if (user) {
-        token.id = user.id;
-      }
-      return token;
+    session: ({ session, user }) => {
+      return {
+        ...session,
+        user: {
+          ...session.user,
+          id: user.id,
+        },
+      };
     },
   },
   secret: process.env.NEXTAUTH_SECRET,
-  // added
-  useSecureCookies: process.env.NODE_ENV === "production", // 本番環境ではセキュアクッキーを使用
+  useSecureCookies: process.env.NODE_ENV === "production",
   cookies: {
     sessionToken: {
       name: `__Secure-next-auth.session-token`,
@@ -61,8 +39,7 @@ export const nextAuthOptions: NextAuthOptions = {
     },
   },
   session: {
-    strategy: "jwt", // JWTベースのセッション管理を明示的に設定
-    // maxAge: 30 * 24 * 60 * 60, // セッションの有効期限（例：30日）
+    strategy: "database",
   },
 };
 
@@ -70,9 +47,9 @@ declare module "next-auth" {
   interface Session {
     user: {
       id: string;
-      email?: string;
-      name?: string;
-      image?: string;
+      email?: string | null;
+      name?: string | null;
+      image?: string | null;
     };
   }
 }
