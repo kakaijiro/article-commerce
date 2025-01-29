@@ -1,4 +1,4 @@
-// "use client";
+"use client";
 import React from "react";
 import { signOut } from "next-auth/react";
 import Image from "next/image";
@@ -7,10 +7,11 @@ import type { User } from "../types/typse";
 import { getServerSession } from "next-auth";
 import { nextAuthOptions } from "../lib/next-auth/options";
 import SessionDebug from "./SessionDebug";
-
-const Header = async () => {
-  const session = await getServerSession(nextAuthOptions); // only in SSR
+import { useSession } from "next-auth/react";
+const Header = () => {
+  const { data: session } = useSession(); // only in SSR
   const user = session?.user as User | undefined;
+  console.log(user);
 
   return (
     <header className="bg-slate-600 text-gray-100 shadow-lg">
@@ -27,6 +28,7 @@ const Header = async () => {
           </Link>
           <Link
             href={user ? "/profile" : "/api/auth/signin"}
+            // href={user ? "/profile" : "/login"}
             className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
           >
             {user ? "Profile" : "Login"}

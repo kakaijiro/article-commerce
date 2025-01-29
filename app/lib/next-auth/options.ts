@@ -39,7 +39,7 @@ export const nextAuthOptions: NextAuthOptions = {
     },
   },
   session: {
-    strategy: "database",
+    strategy: "jwt",
   },
 };
 
