@@ -49,7 +49,7 @@ export default async function ProfilePage() {
       <span className="font-medium text-lg mb-4 mt-4 block">
         Purchased Articles:
       </span>
-      <div className="flex flex-wrap items-center gap-6">
+      <div className="flex flex-wrap justify-center items-center gap-6">
         {purchasedBookDetails.map((book: BookType) => (
           <PurchasedBookDetail key={book.id} detailBook={book} />
         ))}

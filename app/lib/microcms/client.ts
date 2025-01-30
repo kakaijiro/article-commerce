@@ -10,7 +10,9 @@ export const getAllBooks = async () => {
   const allBooks = await client.getList<BookType>({
     endpoint: process.env.NEXT_PUBLIC_SERVICE_DOMAIN!, // "articlecommerce"
     customRequestInit: {
-      cache: "no-store",
+      next: {
+        revalidate: 3600,
+      },
     },
   });
   return allBooks;
