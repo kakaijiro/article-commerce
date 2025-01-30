@@ -1,11 +1,9 @@
 import type { NextAuthOptions } from "next-auth";
 import GitHubProvider from "next-auth/providers/github";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { userAgent } from "next/server";
 import prisma from "../prisma";
 
 export const nextAuthOptions: NextAuthOptions = {
-  // debug: false,
   debug: process.env.NODE_ENV === "development",
   providers: [
     GitHubProvider({
@@ -26,21 +24,22 @@ export const nextAuthOptions: NextAuthOptions = {
     },
   },
   secret: process.env.NEXTAUTH_SECRET,
-  useSecureCookies: process.env.NODE_ENV === "production",
-  cookies: {
-    sessionToken: {
-      name: `__Secure-next-auth.session-token`,
-      options: {
-        httpOnly: true,
-        sameSite: "lax",
-        path: "/",
-        secure: process.env.NODE_ENV === "production",
-      },
-    },
-  },
-  session: {
-    strategy: "jwt",
-  },
+  // *** the following snipet unexpectedly prevent from fetching sessions
+  // useSecureCookies: process.env.NODE_ENV === "production",
+  // cookies: {
+  //   sessionToken: {
+  //     name: `__Secure-next-auth.session-token`,
+  //     options: {
+  //       httpOnly: true,
+  //       sameSite: "lax",
+  //       path: "/",
+  //       secure: process.env.NODE_ENV === "production",
+  //     },
+  //   },
+  // },
+  // session: {
+  //   strategy: "jwt",
+  // },
 };
 
 declare module "next-auth" {

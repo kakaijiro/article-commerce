@@ -1,4 +1,4 @@
-"use client";
+// "use client";
 import React from "react";
 import { signOut } from "next-auth/react";
 import Image from "next/image";
@@ -6,10 +6,9 @@ import Link from "next/link";
 import type { User } from "../types/typse";
 import { getServerSession } from "next-auth";
 import { nextAuthOptions } from "../lib/next-auth/options";
-import SessionDebug from "./SessionDebug";
-import { useSession } from "next-auth/react";
-const Header = () => {
-  const { data: session } = useSession(); // only in SSR
+
+const Header = async () => {
+  const session = await getServerSession(nextAuthOptions); // only in SSR
   const user = session?.user as User | undefined;
   console.log(user);
 
@@ -57,7 +56,6 @@ const Header = () => {
           </Link>
         </div>
       </nav>
-      <SessionDebug />
     </header>
   );
 };
